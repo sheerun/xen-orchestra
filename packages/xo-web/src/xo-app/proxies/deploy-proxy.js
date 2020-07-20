@@ -22,6 +22,8 @@ import {
   isSrWritable,
 } from 'xo'
 
+import HttpProxy from './http-proxy'
+
 const Label = ({ children, ...props }) => (
   <label {...props} style={{ cursor: 'pointer' }}>
     <strong>{children}</strong>
@@ -77,7 +79,6 @@ const Modal = decorate([
     computed: {
       idDnsInput: generateId,
       idGatewayInput: generateId,
-      idHttpProxyInput: generateId,
       idIpInput: generateId,
       idNetmaskInput: generateId,
       idSelectNetwork: generateId,
@@ -131,21 +132,11 @@ const Modal = decorate([
           />
         </Col>
       </SingleLineRow>
-      <SingleLineRow className='mt-1'>
-        <Col mediumSize={4}>
-          <Label htmlFor={state.idHttpProxyInput}>{_('httpProxy')}</Label>
-        </Col>
-        <Col mediumSize={8}>
-          <input
-            className='form-control'
-            id={state.idHttpProxyInput}
-            placeholder={formatMessage(messages.httpProxyPlaceholder)}
-            name='httpProxy'
-            onChange={effects.onInputChange}
-            value={value.httpProxy}
-          />
-        </Col>
-      </SingleLineRow>
+      <HttpProxy
+        className='mt-1'
+        onChange={effects.onInputChange}
+        value={value.httpProxy}
+      />
       <SingleLineRow className='mt-1'>
         <Col mediumSize={4}>
           <Label htmlFor={state.idSelectNetworkMode}>
