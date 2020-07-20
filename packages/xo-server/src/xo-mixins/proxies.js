@@ -175,7 +175,7 @@ export default class Proxy {
     $defer,
     srId,
     licenseId,
-    { networkId, networkConfiguration }
+    { httpProxy, networkId, networkConfiguration }
   ) {
     const app = this._app
     const xoProxyConf = this._xoProxyConf
@@ -224,6 +224,9 @@ export default class Proxy {
       }),
       'vm-data/xoa-updater-channel': JSON.stringify(xoProxyConf.channel),
     }
+    if (httpProxy !== undefined) {
+      xenstoreData['vm-data/xoa-updater-proxy-url'] = JSON.stringify(httpProxy)
+    }
     if (networkConfiguration !== undefined) {
       xenstoreData['vm-data/ip'] = networkConfiguration.ip
       xenstoreData['vm-data/gateway'] = networkConfiguration.gateway
@@ -249,7 +252,7 @@ export default class Proxy {
   async deployProxy(
     srId,
     licenseId,
-    { networkConfiguration, networkId, proxyId } = {}
+    { httpProxy, networkConfiguration, networkId, proxyId } = {}
   ) {
     const app = this._app
     const xoProxyConf = this._xoProxyConf
@@ -279,8 +282,9 @@ export default class Proxy {
       vm,
       xenstoreData,
     } = await this._createProxyVm(srId, licenseId, {
-      networkId,
+      httpProxy,
       networkConfiguration,
+      networkId,
     })
 
     if (redeploy) {
